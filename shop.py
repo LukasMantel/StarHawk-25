@@ -1,0 +1,1 @@
+print("Kaufen sie hier Kram")
