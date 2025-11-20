@@ -1,7 +1,7 @@
 import pygame
 from settings import *
 from gameworld import *
- 
+from objects import *
 pygame.init()
 
 #Test123
