@@ -83,15 +83,15 @@ class SpaceJunk(pygame.sprite.Sprite):
             center=(random.randint(50, width - 50), random.randint(-200, -50))
         )
 
-        self.vx = random.randint(-50, 50)
-        self.vy = random.randint(50, 150)
-        self.screen_height = height
+        self.vx = random.randint(-2, 2)
+        self.vy = random.randint(4, 9)
+        self.height = height
 
-    def update(self, dt):
-        self.rect.x += int(self.vx * dt)
-        self.rect.y += int(self.vy * dt)
+    def update(self,dt=None):
+        self.rect.x += self.vx 
+        self.rect.y += self.vy 
 
-        if self.rect.top > self.screen_height:
+        if self.rect.top > self.height:
             self.kill()
 
 class SpaceObjects:
@@ -119,3 +119,4 @@ class SpaceObjects:
 
 
         
+
