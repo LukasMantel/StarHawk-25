@@ -1,13 +1,13 @@
+from turtle import Screen
 import pygame
-from Gameworld import start_game
+#from Gameworld import start_game
 from highscore import show_highscore
 from shop import open_shop
 
 pygame.init()
 
-WIDTH, HEIGHT = 400, 600
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Star Hawk-25 Menü")
+width, height = 600, 600
+screen = pygame.display.set_mode((width,height))
 
 FONT = pygame.font.SysFont("Arial", 30, True)
 BTN_FONT = pygame.font.SysFont("Arial", 20)
@@ -16,12 +16,14 @@ WHITE = (255, 255, 255)
 GOLD = (132, 106, 26)
 BLACK = (0, 0, 0)
 
+title_image = pygame.image.load("C:/Users/kira_/OneDrive/Documents/GitHub/StarHawk-25/sh_title_big.png").convert_alpha()
+title_rect = title_image.get_rect(center=(WIDTH // 2, 120))
 
 class Button:
     def __init__(self, text, y, action):
         self.text = text
         self.action = action
-        self.rect = pygame.Rect(100, y, 200, 50)
+        self.rect = pygame.Rect(200, y, 200, 50)
 
     def draw(self, mouse_pos):
         if self.rect.collidepoint(mouse_pos):
@@ -41,7 +43,7 @@ class Button:
             self.action()
 
 buttons = [
-    Button("Game", 200, start_game),
+    Button("Game", 200, open_shop),  #start_game),
     Button("Highscore", 280, show_highscore),
     Button("Shop", 360, open_shop)
 ]
@@ -61,11 +63,8 @@ while running:
 
     screen.fill(BLACK)
 
-  
-    title = FONT.render("Star Hawk-25", True, WHITE)
-    screen.blit(title, (WIDTH//2 - title.get_width()//2, 80))
-
-    
+    screen.blit(title_image, title_rect)
+   
     for b in buttons:
         b.draw(mouse_pos)
 

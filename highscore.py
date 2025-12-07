@@ -3,7 +3,7 @@ import pygame
 def show_highscore():
     pygame.init()
 
-    WIDTH, HEIGHT = 400, 600
+    WIDTH, HEIGHT = 600, 600
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Highscore")
 
@@ -18,7 +18,7 @@ def show_highscore():
     class Button:
         def __init__(self, text, y):
             self.text = text
-            self.rect = pygame.Rect(100, y, 200, 50)
+            self.rect = pygame.Rect(200, y, 200, 50)
 
         def draw(self, mouse_pos):
             color = GOLD if self.rect.collidepoint(mouse_pos) else WHITE

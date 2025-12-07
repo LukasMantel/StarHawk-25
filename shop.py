@@ -1,9 +1,10 @@
 import pygame
+from player_data import load_data, save_data
 
 def open_shop():
     pygame.init()
 
-    WIDTH, HEIGHT = 400, 600
+    WIDTH, HEIGHT = 600, 600
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Shop")
 
@@ -13,11 +14,14 @@ def open_shop():
     WHITE = (255, 255, 255)
     GOLD = (132, 106, 26)
     BLACK = (0, 0, 0)
+    RED = (200, 50, 50)
+
+    data = load_data()
 
     class Button:
         def __init__(self, text, y):
             self.text = text
-            self.rect = pygame.Rect(100, y, 200, 50)
+            self.rect = pygame.Rect(200, y, 200, 50)
 
         def draw(self, mouse_pos):
             color = GOLD if self.rect.collidepoint(mouse_pos) else WHITE
@@ -33,11 +37,14 @@ def open_shop():
             return self.rect.collidepoint(mouse_pos)
 
     buttons = [
-        Button("Upgrade 1", 200),
-        Button("Upgrade 2", 280),
-        Button("Upgrade 3", 360),
+        Button("Upgrade 1", 200, 1),
+        Button("Upgrade 2", 280, 2),
+        Button("Upgrade 3", 360, 3),
         Button("Zurück",   480)
     ]
+
+    message = ""
+    msg_timer = 0
 
     running = True
     while running:
@@ -50,18 +57,48 @@ def open_shop():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 for b in buttons:
                     if b.clicked(mouse_pos):
+
                         if b.text == "Zurück":
                             running = False
-                        else:
-                            print(b.text + " gekauft!")  
-            'Hier kommt die der richtige Kaufvorgang mit den Punkten hin'
+                            break
+
+                        if b.ship_id is not None:
+                            ship = str(b.ship_id)
+
+                            
+                            if b.ship_id in data["owned_ships"]:
+                                message = "Schon gekauft."
+                                msg_timer = pygame.time.get_ticks()
+                                break
+
+                           
+                            price = data["ships"][ship]["price"]
+                            if data["coins"] < price:
+                                message = "Zu wenig Coins!"
+                                msg_timer = pygame.time.get_ticks()
+                                break
+
+                            data["coins"] -= price
+                            data["owned_ships"].append(b.ship_id)
+                            save_data(data)
+
+                            message = f"Upgrade {ship} gekauft!"
+                            msg_timer = pygame.time.get_ticks()
+
         screen.fill(BLACK)
 
         title = FONT_TITLE.render("Schiffsupgrades:", True, WHITE)
-        screen.blit(title, (WIDTH // 2 - title.get_width() // 2, 80))
+        screen.blit(title, (WIDTH//2 - title.get_width()//2, 80))
+
+        coins_text = FONT_BTN.render(f"Coins: {data['coins']}", True, GOLD)
+        screen.blit(coins_text, (20, 20))
 
         for b in buttons:
             b.draw(mouse_pos)
+
+        if message and pygame.time.get_ticks() - msg_timer < 1000:
+            msg_txt = FONT_BTN.render(message, True, RED)
+            screen.blit(msg_txt, (WIDTH//2 - msg_txt.get_width()//2, 450))
 
         pygame.display.flip()
 

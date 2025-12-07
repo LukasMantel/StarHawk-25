@@ -1,0 +1,30 @@
+{
+    "coins": 0,
+
+    "owned_ships": [1],      
+    "active_ship": 1,        
+
+    "ships": {
+        "1": {
+            "hp": 3,
+            "fire_rate": 450,
+            "speed": 5,
+            "image": "ship1.png",
+            "price": 10
+        },
+        "2": {
+            "hp": 4,
+            "fire_rate": 350,
+            "speed": 6,
+            "image": "ship2.png",
+            "price": 20
+        },
+        "3": {
+            "hp": 6,
+            "fire_rate": 250,
+            "speed": 7,
+            "image": "ship3.png",
+            "price": 30
+        }
+    }
+}
