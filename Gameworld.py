@@ -15,17 +15,19 @@ clock = pygame.time.Clock()
 
 all_sprites = pygame.sprite.Group()     #Alle Sprites für einfaches Draw/Update
 enemies = pygame.sprite.Group()         #Nur Gegner, für Kollisionen
-bullets = pygame.sprite.Group()         #Nur Spieler Bullets
-enemy_bullets = pygame.sprite.Group()   #Enemy Bullets
+bullets = pygame.sprite.Group()         #Nur Player Bullets
+enemy_bullets = pygame.sprite.Group()   #Boss Bullets
+boss = pygame.sprite.Group()            #Boss
 
 player = Player()
 all_sprites.add(player)
 
-wave_controller = EnemyWave(all_sprites, enemies, player, enemy_bullets)
+wave_controller = EnemyWave(all_sprites, enemies, player, enemy_bullets, boss)
 wave_controller.start_new_wave()
 
 score = 0
 game_over = False  #True, wenn der Spieler besiegt wurde
+game_won = False # neu winning screen
 paused = False     #True, wenn das Spiel pausiert ist
 font = pygame.font.Font(None, 36)
 big_font = pygame.font.Font(None, 72)
@@ -38,8 +40,7 @@ while running:
     clock.tick(FPS)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            
+            running = False          
 
         if event.type == pygame.KEYDOWN:
             #Escape = Spiel beenden
@@ -65,13 +66,32 @@ while running:
                     all_sprites.add(player)
 
                     #Waves neu starten
-                    wave_controller = EnemyWave(all_sprites, enemies, player, enemy_bullets)
+                    wave_controller = EnemyWave(all_sprites, enemies, player, enemy_bullets, boss)
                     wave_controller.start_new_wave()
 
                     #Score & HP zurücksetzen
                     score = 0
                     player.hp = player.max_hp
                     game_over = False
+            if game_won: ## evtl anpassen, Kopie von game_over
+                if event.key == pygame.K_r:
+                    #alles reseten
+                    all_sprites.empty()
+                    enemies.empty()
+                    bullets.empty()
+
+                    #Player neu erstellen
+                    player = Player()
+                    all_sprites.add(player)
+
+                    #Waves neu starten
+                    wave_controller = EnemyWave(all_sprites, enemies, player, enemy_bullets, boss)
+                    wave_controller.start_new_wave()
+
+                    #Score & HP zurücksetzen
+                    score = 0
+                    player.hp = player.max_hp
+                    game_won = False
 
     #Update, wenn nicht game over oder paused
     if not game_over and not paused:
@@ -112,6 +132,15 @@ while running:
             if player.hp <= 0:
                 game_over = True
 
+        #collision bullets - enemies, player - enemies player - enemy_bullets (Boss)
+        hits = pygame.sprite.groupcollide(boss, bullets, False, True)
+        for enemy, bullet_list in hits.items():
+            for bullet in bullet_list:
+                SND_ENEMY_HIT.play()
+                enemy.health -= 1
+                if enemy.health <= 0:
+                    game_won = True
+
     #Draw alle Objekte
     screen.fill((0, 0, 0))
     all_sprites.draw(screen)
@@ -140,11 +169,14 @@ while running:
         text = big_font.render("GAME OVER - PRESS R TO RESTART", True, (255, 0, 0))
         screen.fill((0, 0, 0))
         screen.blit(text, (WIDTH//2 - text.get_width()//2, HEIGHT//2))
-
+    #Win Screen
+    if game_won:
+        text = big_font.render("YOU WON - PRESS R TO RESTART", True, (255, 0, 0))
+        screen.fill((0, 0, 0))
+        screen.blit(text, (WIDTH//2 - text.get_width()//2, HEIGHT//2))
 
     pygame.display.flip()
 
 
 pygame.quit()
-
 
