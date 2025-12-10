@@ -4,7 +4,7 @@ from settings import *
 from sprites import *
 from spawner import EnemyWave
 from sounds import *
-
+from objects import SpaceObjects, BG, Explosion
 
 pygame.init()
 mixer.init()
@@ -146,4 +146,5 @@ while running:
 
 
 pygame.quit()
+
 
