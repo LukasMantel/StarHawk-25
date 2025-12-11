@@ -1,13 +1,12 @@
-from turtle import Screen
 import pygame
-#from Gameworld import start_game
+#from main import start_game
 from highscore import show_highscore
 from shop import open_shop
 
 pygame.init()
 
-width, height = 600, 600
-screen = pygame.display.set_mode((width,height))
+WIDTH, HEIGHT = 600, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 FONT = pygame.font.SysFont("Arial", 30, True)
 BTN_FONT = pygame.font.SysFont("Arial", 20)
@@ -16,7 +15,7 @@ WHITE = (255, 255, 255)
 GOLD = (132, 106, 26)
 BLACK = (0, 0, 0)
 
-title_image = pygame.image.load("C:/Users/kira_/OneDrive/Documents/GitHub/StarHawk-25/sh_title_big.png").convert_alpha()
+title_image = pygame.image.load("images/sh_titel.png").convert_alpha()
 title_rect = title_image.get_rect(center=(WIDTH // 2, 120))
 
 class Button:
