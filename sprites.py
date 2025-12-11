@@ -80,7 +80,7 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
 
-        self.image = pygame.image.load('images/enemy_red.png').convert()
+        self.image = pygame.image.load('images/Ship (13).png').convert()
         self.image = pygame.transform.scale(self.image, (ENEMY_WIDTH, ENEMY_HEIGHT))
 
         self.rect = self.image.get_rect(center=(x, y))
@@ -189,4 +189,5 @@ class Boss(pygame.sprite.Sprite):
         #Füllung (proportional zur HP)
         fill_width = int(bar_width * (self.health / self.max_hp))
         pygame.draw.rect(window, GREEN, (x, y, fill_width, bar_height))
+
 
