@@ -60,6 +60,8 @@ while running:
                     all_sprites.empty()
                     enemies.empty()
                     bullets.empty()
+                    boss.empty()
+                    enemy_bullets.empty()
 
                     #Player neu erstellen
                     player = Player()
@@ -79,6 +81,8 @@ while running:
                     all_sprites.empty()
                     enemies.empty()
                     bullets.empty()
+                    boss.empty()
+                    enemy_bullets.empty()
 
                     #Player neu erstellen
                     player = Player()
@@ -179,4 +183,5 @@ while running:
 
 
 pygame.quit()
+
 
