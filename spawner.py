@@ -3,9 +3,11 @@ from sprites import *
 from settings import *
 
 
+
 class EnemyWave:
-    def __init__(self, all_sprites, enemies, player, enemy_bullets):
+    def __init__(self, all_sprites, enemies, player, enemy_bullets, boss):
         self.enemies = enemies
+        self.boss = boss
         self.all_sprites = all_sprites
         self.player = player
         self.enemy_bullets = enemy_bullets
@@ -44,7 +46,7 @@ class EnemyWave:
         if self.wave_number==BOSS_SPAWN:
             boss = Boss(self.player, self.enemy_bullets, WIDTH // 2, 50)
             self.all_sprites.add(boss)
-            self.enemies.add(boss)
+            self.boss.add(boss)
             return
         #Normale Gegner
         x = random.randint(50, WIDTH-50)
