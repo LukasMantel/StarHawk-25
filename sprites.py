@@ -1,15 +1,38 @@
 import pygame
 from settings import *
 import random
-from sounds import *
+from audio import *
+
+
+ship1 = False
+ship2 = True
+ship3 = True
+
+'''
+Movement speed
+Mehrfachschuss
+Mehr Leben
+Reload speed
+
+Ship2
+Ship3
+'''
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
         #Player image
-        self.image = pygame.image.load("images/Ship.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (50, 40))
+        if ship1 == True:
+            self.image = pygame.image.load("images/Ship (13).png").convert_alpha()
+            self.image = pygame.transform.scale(self.image, (50, 40))
+        elif ship2 == True:
+            self.image = pygame.image.load("images/Ship.png").convert_alpha()
+            self.image = pygame.transform.scale(self.image, (PLAYER_WIDTH, PLAYER_HEIGHT))
+        else:
+            self.image = pygame.image.load("images/seagull_1.png").convert_alpha()
+            self.image = pygame.transform.scale(self.image, (80, 80)) 
+
 
         self.rect = self.image.get_rect(center=(WIDTH//2, HEIGHT-50))
         self.speed = PLAYER_SPEED
@@ -57,11 +80,11 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
 
-        self.image = pygame.image.load('images/ship (13).png').convert()
-        self.image = pygame.transform.scale(self.image, (40, 40))
+        self.image = pygame.image.load('images/Ship (13).png').convert()
+        self.image = pygame.transform.scale(self.image, (ENEMY_WIDTH, ENEMY_HEIGHT))
 
         self.rect = self.image.get_rect(center=(x, y))
-        self.speed = random.randint(1, 3)
+        self.speed = random.randint(ENEMY_SPEED+1, ENEMY_SPEED+3)
         self.health = 1
     
     def update(self):
@@ -80,11 +103,11 @@ class Bullet(pygame.sprite.Sprite):
         self.vel_y = vel_y
 
     def update(self):
-        # Bewegung in beide Richtungen
+        #Bewegung in beide Richtungen
         self.rect.x += self.vel_x
         self.rect.y += self.vel_y
 
-        # Aus Bildschirm entfernen
+        #Aus Bildschirm entfernen
         if (self.rect.bottom < 0 or self.rect.top > HEIGHT or
             self.rect.right < 0 or self.rect.left > WIDTH):
             self.kill()
@@ -166,3 +189,5 @@ class Boss(pygame.sprite.Sprite):
         #Füllung (proportional zur HP)
         fill_width = int(bar_width * (self.health / self.max_hp))
         pygame.draw.rect(window, GREEN, (x, y, fill_width, bar_height))
+
+
