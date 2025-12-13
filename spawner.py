@@ -1,17 +1,22 @@
 import pygame
 from sprites import *
 from settings import *
+from objects import *
 
 
 
 class EnemyWave:
-    def __init__(self, all_sprites, enemies, player, enemy_bullets, boss):
+    def __init__(self, all_sprites, enemies, player, enemy_bullets, boss, space_objects#spaceobjects hinzugefügt):
         self.enemies = enemies
         self.boss = boss
         self.all_sprites = all_sprites
         self.player = player
         self.enemy_bullets = enemy_bullets
-
+        #ab hier spaceobjects
+        self.space_objects = space_objects
+        self.meteor_spawn_chance = 0.01
+        self.junk_spawn_chance = 0.2
+        #spaceobejcts end
         self.wave_number = 0
         self.enemies_in_wave = 5
         self.enemies_spawned = 0
@@ -40,6 +45,16 @@ class EnemyWave:
             self.enemies_spawned += 1
             if self.enemies_spawned >= self.enemies_in_wave:
                 self.wave_complete = True
+#ab hier objects spawns hinzugefügt
+        if random.random() < self.meteor_spawn_chance:
+            x = random.randint(50, WIDTH - 50)
+            self.space_objects.spawn_meteor(
+                x, -50, large=random.choice([True, False])
+            )
+
+        if random.random() < self.junk_spawn_chance:
+            self.space_objects.spawn_random_junk()
+ #spaceobjects ende      
     
     def spawn_enemy(self):
         #Boss
