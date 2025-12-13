@@ -1,10 +1,12 @@
 import pygame
 from pygame import mixer
 from settings import *
-from sprites import *
+from sprites2 import *
 from spawner import EnemyWave
 from sounds import *
 from objects import *
+from assets import load_assets
+
 
 pygame.init()
 mixer.init()
@@ -12,6 +14,7 @@ mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("StarHawk'25")
 clock = pygame.time.Clock()
+dt = clock.tick(FPS) / 1000
 
 all_sprites = pygame.sprite.Group()     #Alle Sprites für einfaches Draw/Update
 enemies = pygame.sprite.Group()         #Nur Gegner, für Kollisionen
@@ -19,11 +22,15 @@ bullets = pygame.sprite.Group()         #Nur Player Bullets
 enemy_bullets = pygame.sprite.Group()   #Boss Bullets
 boss = pygame.sprite.Group()            #Boss
 particles = pygame.sprite.Group()       #neu
-
+assets = load_assets()
+space_objects = SpaceObjects(WIDTH, HEIGHT, assets)
 player = Player()
 all_sprites.add(player)
 
-wave_controller = EnemyWave(all_sprites, enemies, player, enemy_bullets, boss)
+#background stars
+bg = BG(WIDTH, HEIGHT, star_count=150)
+
+wave_controller = EnemyWave(all_sprites, enemies, player, enemy_bullets, boss, space_objects)
 wave_controller.start_new_wave()
  
 score = 0
@@ -78,7 +85,7 @@ while running:
                     all_sprites.add(player)
 
                     #Waves neu starten
-                    wave_controller = EnemyWave(all_sprites, enemies, player, enemy_bullets, boss)
+                    wave_controller = EnemyWave(all_sprites, enemies, player, enemy_bullets, boss, space_objects)
                     wave_controller.start_new_wave()
 
                     #Score & HP zurücksetzen
@@ -100,7 +107,7 @@ while running:
                     all_sprites.add(player)
 
                     #Waves neu starten
-                    wave_controller = EnemyWave(all_sprites, enemies, player, enemy_bullets, boss)
+                    wave_controller = EnemyWave(all_sprites, enemies, player, enemy_bullets, boss, space_objects)
                     wave_controller.start_new_wave()
 
                     #Score & HP zurücksetzen
@@ -111,7 +118,8 @@ while running:
     #Update, wenn nicht game over oder paused
     if not game_over and not paused:
         # Enemy Waves aktualisieren
-        wave_controller.update()
+        wave_controller.update() 
+        space_objects.update(dt, player, bullets) 
         
 
         #neue Welle
@@ -122,7 +130,7 @@ while running:
         all_sprites.update()
         enemy_bullets.update()
         particles.update() # neu
-        
+        bg.update(dt)
 
         #collision bullets - enemies, player - enemies player - enemy_bullets (Boss)
         hits = pygame.sprite.groupcollide(enemies, bullets, False, True)
@@ -170,14 +178,15 @@ while running:
                     game_won = True
 
     #Draw alle Objekte
-    
-    screen.fill((0, 0, 0))
+    bg.update(dt)
+    screen.blit(bg.image, (0, 0))
     all_sprites.draw(screen)
     enemy_bullets.draw(screen)
     player.draw_healthbar_player(screen)
     player.draw_armor_player(screen)
     player.draw_reload_bar(screen)
     particles.draw(screen) #neu
+   
     
 
     for sprite in all_sprites:
@@ -207,10 +216,11 @@ while running:
     if game_won:
         text = big_font.render("YOU WON - PRESS R TO RESTART", True, (255, 0, 0))
         screen.fill((0, 0, 0))
-        screen.blit(text, (WIDTH//2 - text.get_width()//2, HEIGHT//2))
+        screen.blit(text, (WIDTH//2 - text.get_width()//2, HEIGHT//2)) 
+
+    space_objects.draw(screen)
 
     pygame.display.flip()
 
 
 pygame.quit()
-
