@@ -127,15 +127,14 @@ class SpaceObjects:
                 hit.hp -= 1
                 b.kill()
                 if hit.hp <= 0:
-                    explosion = Explosion(hit.rect.centerx, hit.rect.centery, 60)
-                    self.fragments.add(explosion)
                     for _ in range(2 if hit.image.get_width() < 50 else 4):
-                        f = Fragment(
-                            hit.rect.centerx + random.randint(-12, 12),
-                            hit.rect.centery + random.randint(-12, 12),
-                            self.assets["FRAGMENT"]
+                        self.fragments.add(
+                            Fragment(
+                                hit.rect.centerx + random.randint(-12, 12),
+                                hit.rect.centery + random.randint(-12, 12),
+                                self.assets["FRAGMENT"]
+                            )
                         )
-                        self.fragments.add(f)
                     hit.kill()
                     self.stats["score"] += 20
 
@@ -156,4 +155,5 @@ class SpaceObjects:
         self.meteors.draw(screen)
         self.fragments.draw(screen)
         self.junk.draw(screen)
+
 
