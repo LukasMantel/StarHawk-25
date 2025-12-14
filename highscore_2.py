@@ -1,8 +1,10 @@
 import pygame
 import os
 import json
+from settings import *
 
 HIGHSCORE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "highscore.json")
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 def load_highscore():
     if os.path.exists(HIGHSCORE_FILE):
@@ -14,7 +16,6 @@ def load_highscore():
 def show_highscore():
     pygame.init()
 
-    WIDTH, HEIGHT = 900, 600
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Highscore")
 
@@ -80,5 +81,51 @@ def show_highscore():
         back_button.draw(mouse_pos)
 
         pygame.display.flip()
+# in gameworld
+def get_highscore():
+        scores = [entry["score"] for entry in load_highscore()]
+        return max(scores, default=0)  # Höchster Score oder 0, wenn Liste leer
 
+def ask_player_name():
+    pygame.display.set_caption("Name eingeben")
+    FONT = pygame.font.SysFont("Arial", 24)
+    input_text = ""
+    active = True
+    
+    while active:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return "Player"
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    return input_text if input_text else "Player"
+                elif event.key == pygame.K_BACKSPACE:
+                    input_text = input_text[:-1]
+                else:
+                    input_text += event.unicode
+
+        screen.fill((0, 0, 0))
+
+        msg = FONT.render("Name eingeben:", True, (255, 255, 255))
+        msg_rect = msg.get_rect(center=(screen.get_width()//2, screen.get_height()//2 - 30))
+        screen.blit(msg, msg_rect)
+        
+        txt_surface = FONT.render(input_text, True, (255, 255, 255))
+        txt_rect = txt_surface.get_rect(center=(screen.get_width()//2, screen.get_height()//2 + 20))
+        screen.blit(txt_surface, txt_rect)
+        
+        pygame.display.flip()
+
+def save_highscore(score, name="Player"):
+    highscore = load_highscore()
+    highscore.append({"name": name, "score": score})
+    # absteigend sortierte Top 5
+    highscore.sort(key=lambda x: x["score"], reverse=True)
+    highscore = highscore[:5]
+    # speichere zurück in JSON
+    data = {"highscore": highscore}
+    with open(HIGHSCORE_FILE, "w") as f:
+        json.dump(data, f, indent=4)
     return
+
+
