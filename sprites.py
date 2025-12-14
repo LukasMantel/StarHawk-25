@@ -1,7 +1,7 @@
 import pygame
 from settings import *
 import random
-from sounds import *
+from audio import *
 import math
 
 
@@ -347,3 +347,4 @@ class Boss(pygame.sprite.Sprite):
         #Füllung (proportional zur HP)
         fill_width = int(bar_width * (self.health / self.health_max))
         pygame.draw.rect(window, GREEN, (x, y, fill_width, bar_height))
+
