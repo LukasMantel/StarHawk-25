@@ -1,7 +1,7 @@
 import pygame
 from pygame import mixer
 from settings import *
-from sprites2 import *
+from sprites import *
 from spawner import EnemyWave
 from sounds import *
 from objects import *
@@ -224,3 +224,4 @@ while running:
 
 
 pygame.quit()
+
