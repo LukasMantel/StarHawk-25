@@ -161,7 +161,9 @@ def start_game():
         if not game_over and not paused:
             # Enemy Waves aktualisieren
             wave_controller.update() 
-            space_objects.update(dt, player, bullets) 
+            player_dead = space_objects.update(dt, player, bullets)
+            if player_dead:
+                game_over = True
             
 
             #neue Welle
