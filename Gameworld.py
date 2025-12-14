@@ -3,7 +3,7 @@ from pygame import mixer
 from settings import *
 from sprites import *
 from spawner import EnemyWave
-from sounds import *
+from audio import *
 from objects import *
 from assets import load_assets
 
@@ -224,4 +224,5 @@ while running:
 
 
 pygame.quit()
+
 
