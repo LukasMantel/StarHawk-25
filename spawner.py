@@ -6,7 +6,7 @@ from objects import *
 
 
 class EnemyWave:
-    def __init__(self, all_sprites, enemies, player, enemy_bullets, boss, space_objects#spaceobjects hinzugefügt):
+    def __init__(self, all_sprites, enemies, player, enemy_bullets, boss, space_objects):#spaceobjects hinzugefügt
         self.enemies = enemies
         self.boss = boss
         self.all_sprites = all_sprites
@@ -70,3 +70,4 @@ class EnemyWave:
         enemy = Enemy(x, y)
         self.all_sprites.add(enemy)
         self.enemies.add(enemy)
+
