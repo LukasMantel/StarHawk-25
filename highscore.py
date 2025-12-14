@@ -1,9 +1,20 @@
 import pygame
+import os
+import json
+
+HIGHSCORE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "highscore.json")
+
+def load_highscore():
+    if os.path.exists(HIGHSCORE_FILE):
+        with open(HIGHSCORE_FILE, "r") as f:
+            data = json.load(f)
+            return data.get("highscore", [])
+    return []
 
 def show_highscore():
     pygame.init()
 
-    WIDTH, HEIGHT = 600, 600
+    WIDTH, HEIGHT = 900, 600
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Highscore")
 
@@ -15,10 +26,11 @@ def show_highscore():
     GOLD = (132, 106, 26)
     BLACK = (0, 0, 0)
 
+    #Buttoneigenschaften
     class Button:
         def __init__(self, text, y):
             self.text = text
-            self.rect = pygame.Rect(200, y, 200, 50)
+            self.rect = pygame.Rect(WIDTH//2-100, y, 200, 50)
 
         def draw(self, mouse_pos):
             color = GOLD if self.rect.collidepoint(mouse_pos) else WHITE
@@ -33,9 +45,11 @@ def show_highscore():
 
     back_button = Button("Zurück", 480)
 
-    # Beispiel-Highscore-Liste, wirs später durch echte eingespeicherte Punktewerte ersetzt
-    highscores = [("Anna", 120), ("Ben", 100), ("Clara", 80), ("David", 60)]
-    
+    # Top 5 Highscores aus der JSON laden und sortieren
+    highscore_data = load_highscore()
+    highscore_data.sort(key=lambda x: x["score"], reverse=True)
+    highscore = [(entry["name"], entry["score"]) for entry in highscore_data[:5]]
+
     running = True
     while running:
         mouse_pos = pygame.mouse.get_pos()
@@ -51,13 +65,17 @@ def show_highscore():
         screen.fill(BLACK)
 
         title = FONT_TITLE.render("Highscore:", True, WHITE)
-        screen.blit(title, (WIDTH//2 - title.get_width()//2, 80))
+        screen.blit(title, title.get_rect(center=(WIDTH//2, 80)))
 
-        y_offset = 150
-        for name, score in highscores:
-            line = FONT_LIST.render(f"{name}: {score}", True, WHITE)
-            screen.blit(line, (WIDTH//2 - line.get_width()//2, y_offset))
-            y_offset += 35
+        if not highscore:
+            msg = FONT_LIST.render("Keine Highscores vorhanden.", True, WHITE)
+            screen.blit(msg, msg.get_rect(center=(WIDTH//2, HEIGHT//2)))
+        else:
+            y_offset = 150
+            for name, score in highscore:
+                line = FONT_LIST.render(f"{name}: {score}", True, WHITE)
+                screen.blit(line, line.get_rect(center=(WIDTH//2, y_offset)))
+                y_offset += 35
 
         back_button.draw(mouse_pos)
 
