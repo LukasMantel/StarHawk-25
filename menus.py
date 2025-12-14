@@ -1,11 +1,15 @@
+import os
 import pygame
-#from main import start_game
+from main import start_game
 from highscore import show_highscore
 from shop import open_shop
 
 pygame.init()
 
-WIDTH, HEIGHT = 600, 600
+BASE = os.path.dirname(os.path.abspath(__file__))
+ASSETS = os.path.join(BASE, "images")
+
+WIDTH, HEIGHT = 900, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 FONT = pygame.font.SysFont("Arial", 30, True)
@@ -15,7 +19,7 @@ WHITE = (255, 255, 255)
 GOLD = (132, 106, 26)
 BLACK = (0, 0, 0)
 
-title_image = pygame.image.load("images/sh_titel.png").convert_alpha()
+title_image = pygame.image.load(os.path.join (images, "sh_titel.png")).convert_alpha()
 title_rect = title_image.get_rect(center=(WIDTH // 2, 120))
 
 class Button:
@@ -40,9 +44,9 @@ class Button:
     def click(self, mouse_pos):
         if self.rect.collidepoint(mouse_pos):
             self.action()
-
+    
 buttons = [
-    Button("Game", 200, open_shop),  #start_game),
+    Button("Game", 200, lambda: start_game()),
     Button("Highscore", 280, show_highscore),
     Button("Shop", 360, open_shop)
 ]
@@ -68,5 +72,3 @@ while running:
         b.draw(mouse_pos)
 
     pygame.display.flip()
-
-pygame.quit()
