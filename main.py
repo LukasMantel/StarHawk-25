@@ -1,4 +1,3 @@
-@ -1,288 +0,0 @@
 import os
 import math
 import pygame
