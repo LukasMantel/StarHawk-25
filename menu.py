@@ -1,74 +1,86 @@
 import os
+import sys
 import pygame
-from main import start_game
-from highscore import show_highscore
-from shop import open_shop
+from Gameworld_2 import start_game
+from highscore_2 import show_highscore
+from settings import *
 
 pygame.init()
 
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("StarHawk'25")
+
 BASE = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(BASE, "images")
+menu_bg = pygame.image.load(os.path.join(ASSETS, "menu_bg.png")).convert()
+menu_bg = pygame.transform.scale(menu_bg, (WIDTH, HEIGHT))
 
-WIDTH, HEIGHT = 900, 600
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
-FONT = pygame.font.SysFont("Arial", 30, True)
-BTN_FONT = pygame.font.SysFont("Arial", 20)
-
-WHITE = (255, 255, 255)
-GOLD = (132, 106, 26)
-BLACK = (0, 0, 0)
-
-title_image = pygame.image.load(os.path.join (images, "sh_titel.png")).convert_alpha()
-title_rect = title_image.get_rect(center=(WIDTH // 2, 120))
+BTN_FONT = pygame.font.SysFont("Impact", 30)
 
 class Button:
-    def __init__(self, text, y, action):
+    def __init__(self, text, y, action, x=None, width=180, height=50):
         self.text = text
         self.action = action
-        self.rect = pygame.Rect(200, y, 200, 50)
+        self.width = width
+        self.height = height
+        if x is None:
+            x = WIDTH // 2 - width // 2
+        self.rect = pygame.Rect(x, y, width, height)
 
-    def draw(self, mouse_pos):
-        if self.rect.collidepoint(mouse_pos):
-            color = GOLD
-        else:
-            color = WHITE
-
-        pygame.draw.rect(screen, BLACK, self.rect)
-        pygame.draw.rect(screen, color, self.rect, 2)
-
+    def draw(self, surface, mouse_pos):
+        color = GOLD if self.rect.collidepoint(mouse_pos) else BLACK
         txt = BTN_FONT.render(self.text, True, color)
         txt_rect = txt.get_rect(center=self.rect.center)
-        screen.blit(txt, txt_rect)
+        surface.blit(txt, txt_rect)
 
     def click(self, mouse_pos):
         if self.rect.collidepoint(mouse_pos):
             self.action()
+
+
+#game schließen
+def quit_game():
+    pygame.quit()
+    sys.exit()
+
+
+def main_menu():
+    button_y = HEIGHT * 0.77
+    spacing = 95
+    total_width = 3 * 180 + 2 * spacing
+    offset = 3
+    start_x = (WIDTH - total_width)//2 - offset
+
+    buttons = [
+        Button("HIGHSCORE", button_y, lambda: show_highscore(), x=start_x),
+        Button("GAME", button_y *0.94, lambda: start_game(main_menu), x=start_x + 180 + spacing),
+        Button("EXIT GAME", button_y, lambda: quit_game(screen, main_menu_action=main_menu), x=start_x + 2*(180 + spacing))
+    ]
+
+
+    running = True
+    while running:
+        mouse_pos = pygame.mouse.get_pos()
+        screen.blit(menu_bg, (0,0))
+
+        #buttons zeichnen
+        for b in buttons:
+            b.draw(screen, mouse_pos)
+
     
-buttons = [
-    Button("Game", 200, lambda: start_game()),
-    Button("Highscore", 280, show_highscore),
-    Button("Shop", 360, open_shop)
-]
 
-running = True
-while running:
-    mouse_pos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit_game()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 for b in buttons:
                     b.click(mouse_pos)
+                
 
-    screen.fill(BLACK)
+        pygame.display.flip()
 
-    screen.blit(title_image, title_rect)
-   
-    for b in buttons:
-        b.draw(mouse_pos)
 
-    pygame.display.flip()
+if __name__ == "__main__":
+    main_menu()
+    pygame.quit()
