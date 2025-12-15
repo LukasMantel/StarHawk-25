@@ -4,12 +4,12 @@ import random
 from audio import *
 import math
 
-#https://opengameart.org/content/spaceship-8 
-#Credit wubitog and Skorpio ( http://opengameart.org/users/skorpio ) or just credit Skorpio since it is all his artwork to my knowledge.
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        
+        #https://opengameart.org/content/spaceship-8 
+        #Credit wubitog and Skorpio ( http://opengameart.org/users/skorpio ) or just credit Skorpio since it is all his artwork to my knowledge.
         self.image = pygame.image.load("images/ship.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (PLAYER_WIDTH, PLAYER_HEIGHT))
         
@@ -60,7 +60,7 @@ class Player(pygame.sprite.Sprite):
         fill = int(bar_width * progress)
         pygame.draw.rect(surface, (0, 255, 0), (x, y, fill, bar_height))
 
-        #border
+      
         pygame.draw.rect(surface, (255, 255, 255), (x, y, bar_width, bar_height), 2)
     
     def update(self):
@@ -69,7 +69,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.x -= self.speed
         if keys[pygame.K_RIGHT] and self.rect.right < WIDTH:
             self.rect.x += self.speed
-    '''
+    ''' #initalie Shoot Funktion, ersetzt durch die verschiedene Verianten
     def shoot(self, all_sprites, bullets):
         now = pygame.time.get_ticks()
         if now - self.last_shot > self.shoot_delay:
@@ -320,4 +320,5 @@ class Boss(pygame.sprite.Sprite):
         #Füllung (proportional zur HP)
         fill_width = int(bar_width * (self.health / self.health_max))
         pygame.draw.rect(window, GREEN, (x, y, fill_width, bar_height))
+
 
