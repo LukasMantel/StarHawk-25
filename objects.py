@@ -21,6 +21,7 @@ class Star(pygame.sprite.Sprite):
             self.rect.y = -2
             self.rect.x = random.randint(0, self.width)
 
+
 #background + stars
 class BG(pygame.sprite.Sprite):
     def __init__(self, width, height, star_count=150):
@@ -39,6 +40,7 @@ class BG(pygame.sprite.Sprite):
         self.stars.update(dt)
         self.image.fill(self.color)
         self.stars.draw(self.image)
+
 
 #meteorites
 class Meteor(pygame.sprite.Sprite):
@@ -64,6 +66,7 @@ class Meteor(pygame.sprite.Sprite):
         if self.rect.top > self.height:
             self.kill()
 
+
 #fragments
 class Fragment(pygame.sprite.Sprite):
     def __init__(self, x, y, image, size=35):
@@ -79,6 +82,8 @@ class Fragment(pygame.sprite.Sprite):
         self.life -= dt
         if self.life <= 0:
             self.kill()
+
+
 #space Junk
 class SpaceJunk(pygame.sprite.Sprite):
     def __init__(self, image, width, height):
@@ -95,7 +100,8 @@ class SpaceJunk(pygame.sprite.Sprite):
         self.rect.y += self.vy
         if self.rect.top > self.height:
             self.kill()
-            
+
+
 #SpaceObjects Manager
 class SpaceObjects:
     def __init__(self, width, height, assets):
@@ -112,9 +118,9 @@ class SpaceObjects:
         self.meteors.add(Meteor(x, y, img, self.height, large))
 
     def spawn_random_junk(self):
-        if random.random() < 0.1:
+        if random.random() < 0.01:
             self.junk.add(SpaceJunk(self.assets["JUNK"], self.width, self.height))
-        if random.random() < 0.1:
+        if random.random() < 0.01:
             self.junk.add(SpaceJunk(self.assets["JUNK2"], self.width, self.height))
 
     def update(self, dt, player, bullets):
@@ -153,14 +159,21 @@ class SpaceObjects:
                     player.armor += 1
                 j.kill()
 
-        #player colide mit meteorite
+        # player collide mit meteorite
         for m in self.meteors:
             if pygame.sprite.collide_rect(m, player):
                 if hasattr(player, "armor") and player.armor > 0:
                     player.armor -= 1
                 else:
                     player.hp -= 1
+                    if player.hp <= 0:
+                        player.hp = 0
+                        m.kill()
+                        return True   
                 m.kill()
+
+
+        return False
 
     def draw(self, screen):
         self.meteors.draw(screen)
