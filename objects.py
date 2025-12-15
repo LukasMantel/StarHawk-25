@@ -1,5 +1,6 @@
 import pygame
 import random
+from audio import *
 
 #stars for background
 class Star(pygame.sprite.Sprite):
@@ -162,6 +163,7 @@ class SpaceObjects:
         # player collide mit meteorite
         for m in self.meteors:
             if pygame.sprite.collide_rect(m, player):
+                SND_ENEMY_HIT.play()
                 if hasattr(player, "armor") and player.armor > 0:
                     player.armor -= 1
                 else:
