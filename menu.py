@@ -4,6 +4,7 @@ import pygame
 from Gameworld import start_game
 from highscore import show_highscore
 from settings import *
+from audio import *
 
 pygame.init()
 
@@ -38,13 +39,17 @@ class Button:
             self.action()
 
 
-# Game schließen
+#game schließen
 def quit_game():
     pygame.quit()
-    sys.exit()
+    exit()
 
 # Hauptmenübuttons mit Positionen
 def main_menu():
+    
+    from audio import play_game_music
+    play_game_music(volume=0.1)
+
     button_y = HEIGHT * 0.77
     spacing = 95
     total_width = 3 * 180 + 2 * spacing
@@ -75,6 +80,7 @@ def main_menu():
                 for b in buttons:
                     b.click(mouse_pos)
                 
+
         pygame.display.flip()
 
 
