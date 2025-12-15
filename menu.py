@@ -38,12 +38,12 @@ class Button:
             self.action()
 
 
-#game schließen
+# Game schließen
 def quit_game():
     pygame.quit()
     sys.exit()
 
-
+# Hauptmenübuttons mit Positionen
 def main_menu():
     button_y = HEIGHT * 0.77
     spacing = 95
@@ -58,17 +58,14 @@ def main_menu():
         )
     ]
 
-
+    # HG & Buttons werden gezeichnet, Mausbewegung & -klicks werden verarbeitet
     running = True
     while running:
         mouse_pos = pygame.mouse.get_pos()
         screen.blit(menu_bg, (0,0))
 
-        #buttons zeichnen
         for b in buttons:
             b.draw(screen, mouse_pos)
-
-    
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -78,7 +75,6 @@ def main_menu():
                 for b in buttons:
                     b.click(mouse_pos)
                 
-
         pygame.display.flip()
 
 

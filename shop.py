@@ -77,7 +77,8 @@ def open_shop(screen, player, space_objects):
                                 message = "Schon gekauft!"
                                 msg_timer = pygame.time.get_ticks()
                                 break
-
+                            
+                            #Fragmentanzahl prüfen
                             price = upgrades[b.upgrade_name]
                             if space_objects.stats["fragments"] < price:
                                 message = "Nicht genug Fragmente!"

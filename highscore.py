@@ -13,6 +13,7 @@ def load_highscore():
             return data.get("highscore", [])
     return []
 
+# Highscore Fenster 
 def show_highscore():
     pygame.init()
 
@@ -27,7 +28,7 @@ def show_highscore():
     GOLD = (132, 106, 26)
     BLACK = (0, 0, 0)
 
-    #Buttoneigenschaften
+    # Buttoneigenschaften
     class Button:
         def __init__(self, text, y):
             self.text = text
@@ -81,11 +82,12 @@ def show_highscore():
         back_button.draw(mouse_pos)
 
         pygame.display.flip()
-# in gameworld
+# In Gameworld importiert
 def get_highscore():
         scores = [entry["score"] for entry in load_highscore()]
         return max(scores, default=0)  # Höchster Score oder 0, wenn Liste leer
 
+# Text-Eingabefeld, wenn der Spieler den Highscore bricht oder bennenung "Player"
 def ask_player_name():
     
     pygame.display.set_caption("Please insert your name")
@@ -99,7 +101,7 @@ def ask_player_name():
                 return "Player"
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    return input_text if input_text else "Player"
+                    return input_text if input_text else "Player" 
                 elif event.key == pygame.K_BACKSPACE:
                     input_text = input_text[:-1]
                 else:
@@ -117,13 +119,14 @@ def ask_player_name():
         
         pygame.display.flip()
 
+# Neuen Highscore hinzufügen
 def save_highscore(score, name="Player"):
     highscore = load_highscore()
     highscore.append({"name": name, "score": score})
-    # absteigend sortierte Top 5
+    # Absteigend sortierte Top 5
     highscore.sort(key=lambda x: x["score"], reverse=True)
     highscore = highscore[:5]
-    # speichere zurück in JSON
+    # Speichert zurück in JSON
     data = {"highscore": highscore}
     with open(HIGHSCORE_FILE, "w") as f:
         json.dump(data, f, indent=4)

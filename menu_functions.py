@@ -1,9 +1,6 @@
 import pygame
 from settings import *
 
-
-
-
 class Button:
     def __init__(self, text, y, action, x=None, width=200, height=50):
         self.text = text
@@ -24,7 +21,7 @@ class Button:
         if self.rect.collidepoint(mouse_pos):
             self.action()
 
-
+# Interaktives Pausenmenü mit Fortsetzen, Shopzugriff und der Rückkehr zum Hauptmenü
 def show_pause_menu(screen, resume_action, shop_action, main_menu_action):
     pygame.font.init()
     BTN_FONT = pygame.font.SysFont("Impact", 40)
@@ -68,7 +65,7 @@ def show_pause_menu(screen, resume_action, shop_action, main_menu_action):
             b.draw(screen, mouse_pos, BTN_FONT)
         pygame.display.flip()
 
-
+# Game-Over-Menü mit Anzeige und der Rückkehr zum Hauptmenü
 def show_game_over_menu(screen, main_menu_action):
     pygame.font.init()
     BTN_FONT = pygame.font.SysFont("Impact", 40)
