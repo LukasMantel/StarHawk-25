@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.hp = PLAYER_HP
         self.max_hp = PLAYER_MAX_HP
         
-        self.shoot_delay = 200  
+        self.shoot_delay = 2000  
         #Zeitpunkt des letzten Schusses
         self.last_shot = pygame.time.get_ticks()
 
@@ -320,6 +320,7 @@ class Boss(pygame.sprite.Sprite):
         #Füllung (proportional zur HP)
         fill_width = int(bar_width * (self.health / self.health_max))
         pygame.draw.rect(window, GREEN, (x, y, fill_width, bar_height))
+
 
 
 
