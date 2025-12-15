@@ -6,21 +6,21 @@ from objects import *
 
 
 class EnemyWave:
-    def __init__(self, all_sprites, enemies, player, enemy_bullets, boss, space_objects):#spaceobjects hinzugefügt
+    def __init__(self, all_sprites, enemies, player, enemy_bullets, boss, space_objects):
         self.enemies = enemies
         self.boss = boss
         self.all_sprites = all_sprites
         self.player = player
         self.enemy_bullets = enemy_bullets
-        #ab hier spaceobjects
+        #objects
         self.space_objects = space_objects
         self.meteor_spawn_chance = 0.01
         self.junk_spawn_chance = 0.2
-        #spaceobejcts end
+
         self.wave_number = 0
         self.enemies_in_wave = 5
         self.enemies_spawned = 0
-        self.spawn_delay = 1000  # milliseconds between spawns
+        self.spawn_delay = 1000  
         self.last_spawn = 0
         self.wave_complete = False
     
@@ -34,7 +34,7 @@ class EnemyWave:
             self.spawn_delay = 0
         else:
             self.enemies_in_wave = 5 + self.wave_number
-            self.spawn_delay = max(300, 1000 - (self.wave_number * 50))  #Faster spawns as waves progress
+            self.spawn_delay = max(300, 1000 - (self.wave_number * 50))  
     
     def update(self):
         now = pygame.time.get_ticks()
@@ -45,7 +45,7 @@ class EnemyWave:
             self.enemies_spawned += 1
             if self.enemies_spawned >= self.enemies_in_wave:
                 self.wave_complete = True
-#ab hier objects spawns hinzugefügt
+
         if random.random() < self.meteor_spawn_chance:
             x = random.randint(50, WIDTH - 50)
             self.space_objects.spawn_meteor(
@@ -54,7 +54,7 @@ class EnemyWave:
 
         if random.random() < self.junk_spawn_chance:
             self.space_objects.spawn_random_junk()
- #spaceobjects ende      
+        
     
     def spawn_enemy(self):
         #Boss
@@ -70,4 +70,3 @@ class EnemyWave:
         enemy = Enemy(x, y)
         self.all_sprites.add(enemy)
         self.enemies.add(enemy)
-
