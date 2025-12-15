@@ -22,7 +22,7 @@ BOSS_SPAWN = 3
 BOSS_HEALTH = 100
 BOSS_HEALTH_MAX = 100
 
-# Colors
+#Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
@@ -31,6 +31,7 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 GREY = (127, 127, 127)
 GOLD = (132, 106, 26)
+
 
 
 
