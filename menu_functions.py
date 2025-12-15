@@ -1,5 +1,6 @@
 import pygame
 from settings import *
+from audio import *
 
 class Button:
     def __init__(self, text, y, action, x=None, width=200, height=50):
@@ -12,7 +13,7 @@ class Button:
     def draw(self, surface, mouse_pos, font):
         color = GOLD if self.rect.collidepoint(mouse_pos) else BLACK
         pygame.draw.rect(surface, (100, 100, 100), self.rect)
-        pygame.draw.rect(surface, GOLD, self.rect, 3) 
+        pygame.draw.rect(surface, GOLD, self.rect, 3)
         txt = font.render(self.text, True, color)
         txt_rect = txt.get_rect(center=self.rect.center)
         surface.blit(txt, txt_rect)
@@ -21,7 +22,9 @@ class Button:
         if self.rect.collidepoint(mouse_pos):
             self.action()
 
+
 # Interaktives Pausenmenü mit Fortsetzen, Shopzugriff und der Rückkehr zum Hauptmenü
+
 def show_pause_menu(screen, resume_action, shop_action, main_menu_action):
     pygame.font.init()
     BTN_FONT = pygame.font.SysFont("Impact", 40)
@@ -66,14 +69,25 @@ def show_pause_menu(screen, resume_action, shop_action, main_menu_action):
         pygame.display.flip()
 
 # Game-Over-Menü mit Anzeige und der Rückkehr zum Hauptmenü
+
 def show_game_over_menu(screen, main_menu_action):
     pygame.font.init()
     BTN_FONT = pygame.font.SysFont("Impact", 40)
     active = True
 
+    
+    try:
+        SND_DEFEAT.play(-1)
+    except Exception as e:
+        print("Error: Game Over Sound konnte nicht abgespielt werden:", e)
+
     def exit_loop():
         nonlocal active
         active = False
+        try:
+            SND_DEFEAT.stop()
+        except:
+            pass
         main_menu_action()
 
     menu_btn = Button("MAIN MENU", HEIGHT // 2 + 60, exit_loop)
@@ -90,7 +104,49 @@ def show_game_over_menu(screen, main_menu_action):
                     b.click(mouse_pos)
 
         screen.fill((0,0,0))
-        title = BTN_FONT.render("GAME OVER", True, (255,0,0))
+        title = BTN_FONT.render("GAME OVER, Guldan has taken over the galaxy", True, (255,0,0))
+        screen.blit(title, title.get_rect(center=(WIDTH//2, HEIGHT//2 - 60)))
+        for b in buttons:
+            b.draw(screen, mouse_pos, BTN_FONT)
+        pygame.display.flip()
+
+# Win-Menü mit Anzeige und der Rückkehr zum Hauptmenü
+
+def show_win_menu(screen, main_menu_action):
+    pygame.font.init()
+    BTN_FONT = pygame.font.SysFont("Impact", 40)
+    active = True
+
+    
+    try:
+        SND_VICTORY.play(-1)
+    except Exception as e:
+        print("Error: Victory Sound konnte nicht abgespielt werden:", e)
+
+    def exit_loop():
+        nonlocal active
+        active = False
+        try:
+            SND_VICTORY.stop()
+        except:
+            pass
+        main_menu_action()
+
+    menu_btn = Button("MAIN MENU", HEIGHT // 2 + 60, exit_loop)
+    buttons = [menu_btn]
+
+    while active:
+        mouse_pos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                for b in buttons:
+                    b.click(mouse_pos)
+
+        screen.fill((0,0,0))
+        title = BTN_FONT.render("Guldan has been defeated, the galaxy has been saved, you won!", True, (0,200,0))
         screen.blit(title, title.get_rect(center=(WIDTH//2, HEIGHT//2 - 60)))
         for b in buttons:
             b.draw(screen, mouse_pos, BTN_FONT)
