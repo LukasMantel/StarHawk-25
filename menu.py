@@ -54,7 +54,8 @@ def main_menu():
     buttons = [
         Button("HIGHSCORE", button_y, lambda: show_highscore(), x=start_x),
         Button("GAME", button_y *0.94, lambda: start_game(main_menu), x=start_x + 180 + spacing),
-        Button("EXIT GAME", button_y, lambda: quit_game(screen, main_menu_action=main_menu), x=start_x + 2*(180 + spacing))
+        Button("EXIT GAME", button_y, quit_game, x=start_x + 2*(180 + spacing)
+        )
     ]
 
 
