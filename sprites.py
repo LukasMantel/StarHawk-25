@@ -4,52 +4,15 @@ import random
 from audio import *
 import math
 
-
-
-
-'''
-
-FÜR Kira:
-Upgrades aufrufen:
-player.upgrade("shoot_level2") z.B.
-player.upgrade("hp_up")
-player.upgrade("speed_up")
-player.upgrade("reload_up")
-etc.
-
-Movement speed
-Mehrfachschuss
-Mehr Leben
-Reload speed
-
-Ship2
-Ship3
-'''
-ship1 = True
-ship2 = False
-ship3 = False
-
 #https://opengameart.org/content/spaceship-8 
 #Credit wubitog and Skorpio ( http://opengameart.org/users/skorpio ) or just credit Skorpio since it is all his artwork to my knowledge.
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-
-        #Player image
-        if ship1 == True:
-            self.image = pygame.image.load("images/ship.png").convert_alpha()
-            self.image = pygame.transform.scale(self.image, (PLAYER_WIDTH, PLAYER_HEIGHT))
-        elif ship2 == True:
-            self.image = pygame.image.load("images/pidgeon_2.png").convert_alpha()
-            self.image = pygame.transform.scale(self.image, (PLAYER_WIDTH, PLAYER_HEIGHT))
-        else:
-            self.image = pygame.image.load("images/seagull_1.png").convert_alpha()
-            self.image = pygame.transform.scale(self.image, (PLAYER_WIDTH, PLAYER_HEIGHT)) 
-
-        self.ship1 = True
-        self.ship2 = False
-        self.ship3 = False
-
+        
+        self.image = pygame.image.load("images/ship.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (PLAYER_WIDTH, PLAYER_HEIGHT))
+        
         self.rect = self.image.get_rect(center=(WIDTH//2, HEIGHT-100))
         self.speed = PLAYER_SPEED
         
@@ -357,3 +320,4 @@ class Boss(pygame.sprite.Sprite):
         #Füllung (proportional zur HP)
         fill_width = int(bar_width * (self.health / self.health_max))
         pygame.draw.rect(window, GREEN, (x, y, fill_width, bar_height))
+
