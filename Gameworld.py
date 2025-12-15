@@ -6,7 +6,7 @@ from spawner import EnemyWave
 from audio import *
 from objects import *
 from assets import load_assets
-from highscore_2 import *
+from highscore import *
 from menu_functions import show_pause_menu, show_game_over_menu
 from shop import open_shop
 
@@ -212,3 +212,4 @@ def start_game(main_menu):
         pygame.display.flip()
 
     return
+
