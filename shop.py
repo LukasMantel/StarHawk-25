@@ -1,11 +1,14 @@
+''' Wir haben gemeinsam versucht den Shop zu bearbeiten und die Version mit den Json, zur Dateispeicherung
+    umzusetzen und dabei traten immer mehr Probleme auf. Schlußendlich haben wir die Grundstrucktur
+    des Shops mit dem Aufbau, Design und Buttons übernommen und die Kaufabwicklung mit Hilfe von 
+    Chat GPT neu geschrieben, da wir sonst keinen funktionierendes Shopsystem hätten. 
+'''
 import pygame
 from settings import *
 
 def open_shop(screen, player, space_objects):
     FONT_TITLE = pygame.font.SysFont("Impact", 30)
     FONT_BTN = pygame.font.SysFont("Impact", 20)
-
-
     
     upgrades = {
         "shoot_level2": 10,   # einmalig
