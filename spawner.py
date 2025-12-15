@@ -15,7 +15,7 @@ class EnemyWave:
         #objects
         self.space_objects = space_objects
         self.meteor_spawn_chance = 0.01
-        self.junk_spawn_chance = 0.2
+        self.junk_spawn_chance = 0.1
 
         self.wave_number = 0
         self.enemies_in_wave = 5
@@ -70,4 +70,5 @@ class EnemyWave:
         enemy = Enemy(x, y)
         self.all_sprites.add(enemy)
         self.enemies.add(enemy)
+
 
