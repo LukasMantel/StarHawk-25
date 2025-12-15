@@ -15,7 +15,7 @@ BULLET_SPEED = 10
 #Enemy stats
 ENEMY_WIDTH = 90
 ENEMY_HEIGHT = 90
-ENEMY_SPEED = 7
+ENEMY_SPEED = 4
 
 #Boss stats
 BOSS_SPAWN = 5
@@ -31,6 +31,7 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 GREY = (127, 127, 127)
 GOLD = (132, 106, 26)
+
 
 
 
