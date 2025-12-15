@@ -29,7 +29,7 @@ class EnemyWave:
         self.enemies_spawned = 0
         self.wave_complete = False
 
-        if self.wave_number ==BOSS_SPAWN: #ein Gegner alle 15 Welle, Boss
+        if self.wave_number ==BOSS_SPAWN: #Bosswelle in Settings definiert
             self.enemies_in_wave = 1
             self.spawn_delay = 0
         else:
@@ -70,3 +70,4 @@ class EnemyWave:
         enemy = Enemy(x, y)
         self.all_sprites.add(enemy)
         self.enemies.add(enemy)
+
