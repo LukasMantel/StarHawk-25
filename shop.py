@@ -2,7 +2,9 @@
     umzusetzen und dabei traten immer mehr Probleme auf. Schlußendlich haben wir die Grundstrucktur
     des Shops mit dem Aufbau, Design und Buttons übernommen und die Kaufabwicklung mit Hilfe von 
     Chat GPT neu geschrieben, da wir sonst keinen funktionierendes Shopsystem hätten. 
+    Wir haben uns daraufhin hiermit auseinandergesetzt um die Logik zu verstehen und anzupassen.
 '''
+
 import pygame
 from settings import *
 
