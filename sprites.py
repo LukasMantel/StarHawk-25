@@ -248,7 +248,7 @@ class Boss(pygame.sprite.Sprite):
         super().__init__()
         self.player = player
         self.bullet_group = bullet_group
-
+        #Boss-png von ChatGPT erstellt
         self.image = pygame.image.load("images/Guldan.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (150, 150))
         self.rect = self.image.get_rect()
@@ -320,5 +320,6 @@ class Boss(pygame.sprite.Sprite):
         #Füllung (proportional zur HP)
         fill_width = int(bar_width * (self.health / self.health_max))
         pygame.draw.rect(window, GREEN, (x, y, fill_width, bar_height))
+
 
 
