@@ -1,8 +1,8 @@
 import os
 import sys
 import pygame
-from Gameworld_2 import start_game
-from highscore_2 import show_highscore
+from Gameworld import start_game
+from highscore import show_highscore
 from settings import *
 
 pygame.init()
