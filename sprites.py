@@ -29,14 +29,15 @@ ship1 = True
 ship2 = False
 ship3 = False
 
-
+#https://opengameart.org/content/spaceship-8 
+#Credit wubitog and Skorpio ( http://opengameart.org/users/skorpio ) or just credit Skorpio since it is all his artwork to my knowledge.
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
         #Player image
         if ship1 == True:
-            self.image = pygame.image.load("images/kestrel_3.png").convert_alpha()
+            self.image = pygame.image.load("images/ship.png").convert_alpha()
             self.image = pygame.transform.scale(self.image, (PLAYER_WIDTH, PLAYER_HEIGHT))
         elif ship2 == True:
             self.image = pygame.image.load("images/pidgeon_2.png").convert_alpha()
@@ -62,17 +63,20 @@ class Player(pygame.sprite.Sprite):
         self.hp = PLAYER_HP
         self.max_hp = PLAYER_MAX_HP
         
-        self.shoot_delay = 2000  # milliseconds
+        self.shoot_delay = 200  
         self.last_shot = pygame.time.get_ticks()
 
         self.snd_shoot = SND_SHOOT
-
-#reload?
+        #
+    def scale_ship(self, width, height):
+        self.image = pygame.transform.scale(self.image, (width, height))
+        self.rect = self.image.get_rect(center=self.rect.center)
+#reload
     def get_reload_progress(self):
         now = pygame.time.get_ticks()
         diff = now - self.last_shot
 
-        # Werte clampen auf 0–1
+        
         progress = min(diff / self.shoot_delay, 1)
         return progress
 
@@ -82,18 +86,18 @@ class Player(pygame.sprite.Sprite):
         bar_width = 120
         bar_height = 12
 
-        # RECHTS UNTEN
+        
         x = WIDTH - bar_width - 10
         y = HEIGHT - 25
 
-        # Hintergrund (dunkelgrau)
+        
         pygame.draw.rect(surface, (60, 60, 60), (x, y, bar_width, bar_height))
 
-        # Füllung (grün)
+        
         fill = int(bar_width * progress)
         pygame.draw.rect(surface, (0, 255, 0), (x, y, fill, bar_height))
 
-        # Rahmen
+        #border
         pygame.draw.rect(surface, (255, 255, 255), (x, y, bar_width, bar_height), 2)
     
     def update(self):
@@ -115,15 +119,21 @@ class Player(pygame.sprite.Sprite):
     def upgrade(self, upgrade_name):
         if upgrade_name == "shoot_level1":
             self.shoot_level1 = True
+            self.shoot_level2 = False
+            self.shoot_level3 = False
 
         elif upgrade_name == "shoot_level2":
+            self.shoot_level1 = False
             self.shoot_level2 = True
+            self.shoot_level3 = False
 
         elif upgrade_name == "shoot_level3":
+            self.shoot_level1 = False
+            self.shoot_level2 = False
             self.shoot_level3 = True
 
         elif upgrade_name == "hp_up":
-            self.max_hp += 1
+            self.hp += 1
             
         elif upgrade_name == "speed_up":
             self.speed += 1
@@ -241,7 +251,7 @@ class Bullet(pygame.sprite.Sprite):
         #count: Anzahl der Partikel
        
         if group is None:
-            return  # Keine Gruppe angegeben -> nichts machen
+            return  #Keine Gruppe angegeben -> nichts machen
 
         for _ in range(count):
             p = Particle()
@@ -287,11 +297,11 @@ class Boss(pygame.sprite.Sprite):
         self.health_max = BOSS_HEALTH_MAX
 
         
-        # Bewegung
+        #Bewegung
         self.vel_x = 3
         self.direction = 1
 
-        # Timer
+        #Timer
         self.shoot_delay = 1000
         self.last_shot = 0
         self.laser_delay = 5000
@@ -320,8 +330,8 @@ class Boss(pygame.sprite.Sprite):
         vel_x = dx / dist * 5
         vel_y = dy / dist * 5
 
-        # normale Bullet
-        bullet = Bullet(self.rect.centerx, self.rect.bottom, vel_x, vel_y, color=YELLOW)
+        #normale Bullets
+        bullet = Bullet(self.rect.centerx, self.rect.bottom, vel_x, vel_y, color=RED)
         self.bullet_group.add(bullet)
 
     def laser(self):
@@ -333,7 +343,7 @@ class Boss(pygame.sprite.Sprite):
             vel_x = dx / dist * 8
             vel_y = dy / dist * 8
 
-            bullet = Bullet(self.rect.centerx, self.rect.bottom, vel_x, vel_y, color=YELLOW)
+            bullet = Bullet(self.rect.centerx, self.rect.bottom, vel_x, vel_y, color=RED)
             self.bullet_group.add(bullet)
 
     def draw_healthbar_boss(self, window):
@@ -347,4 +357,3 @@ class Boss(pygame.sprite.Sprite):
         #Füllung (proportional zur HP)
         fill_width = int(bar_width * (self.health / self.health_max))
         pygame.draw.rect(window, GREEN, (x, y, fill_width, bar_height))
-
