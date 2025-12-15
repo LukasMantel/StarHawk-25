@@ -7,18 +7,23 @@ from audio import *
 from objects import *
 from assets import load_assets
 from highscore import *
-from menu_functions import show_pause_menu, show_game_over_menu
+from menu_functions import show_pause_menu, show_game_over_menu, show_win_menu
 from shop import open_shop
 
 def start_game(main_menu):
     pygame.init()
     mixer.init()
+    pygame.mixer.music.stop() 
+    play_game_music(volume=0.1)
+    
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("StarHawk'25")
     clock = pygame.time.Clock()
     dt = clock.tick(FPS)/1000
-    #Game music
-    play_game_music()
+    
+    victory_played = False  
+    win_font = pygame.font.Font(None, 48)  
+
     # Sprites
     all_sprites = pygame.sprite.Group()
     enemies = pygame.sprite.Group()
@@ -45,6 +50,8 @@ def start_game(main_menu):
 
     font = pygame.font.Font(None, 36)
     big_font = pygame.font.Font(None, 72)
+    win_font = pygame.font.Font(None, 48)
+
 
     running = True
     while running:
@@ -79,6 +86,7 @@ def start_game(main_menu):
                     
                 if (game_over or game_won) and event.key == pygame.K_r:
                     # Reset Game
+                    SND_VICTORY.stop() 
                     all_sprites.empty()
                     enemies.empty()
                     bullets.empty()
@@ -93,6 +101,7 @@ def start_game(main_menu):
                     space_objects.stats["fragments"] = 0
                     game_over = False
                     game_won = False
+                    victory_played = False
 
         # Pause-Menü
         if paused and not game_over and not game_won:
@@ -138,6 +147,7 @@ def start_game(main_menu):
                         bullet.explode(particles, count=15)
                         score += 10
 
+
             hits = pygame.sprite.spritecollide(player, enemies, True)
             for hit in hits:
                 SND_ENEMY_HIT.play()
@@ -150,6 +160,7 @@ def start_game(main_menu):
 
             hits = pygame.sprite.spritecollide(player, enemy_bullets, True)
             for hit in hits:
+                SND_ENEMY_HIT.play()
                 if player.armor == 0:
                     player.hp -= 1
                     if player.hp <= 0:
@@ -165,6 +176,7 @@ def start_game(main_menu):
                     enemy.health -= 1
                     if enemy.health <= 0:
                         game_won = True
+
 
         # Draw everything
         screen.blit(bg.image, (0,0))
@@ -192,6 +204,7 @@ def start_game(main_menu):
 
         # Game Over Menü
         if game_over:
+            stop_game_music()
             if score > highscore:
                 player_name = ask_player_name()
                 save_highscore(score, player_name)
@@ -204,14 +217,29 @@ def start_game(main_menu):
             if return_to_menu:
                 break
 
+        
         # Win Screen
         if game_won:
-            screen.fill((0,0,0))
-            text = big_font.render("YOU WON - PRESS R TO RESTART", True, (255,0,0))
-            screen.blit(text, (WIDTH//2 - text.get_width()//2, HEIGHT//2))
+            stop_game_music()
+            if not victory_played:
+                try:
+                    SND_VICTORY.play(loops=0)  
+                except:
+                    print("Error: Victory Sound konnte nicht abgespielt werden")
+                victory_played = True
+
+            if score > highscore:
+                player_name = ask_player_name()
+                save_highscore(score, player_name)
+
+            def main_menu_wrapper_win():
+                nonlocal return_to_menu
+                SND_VICTORY.stop()
+                return_to_menu = True
+
+            show_win_menu(screen, main_menu_action=main_menu_wrapper_win)
+            running = False
 
         pygame.display.flip()
 
     return
-
-
