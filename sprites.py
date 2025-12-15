@@ -34,7 +34,7 @@ class Player(pygame.sprite.Sprite):
     def scale_ship(self, width, height):
         self.image = pygame.transform.scale(self.image, (width, height))
         self.rect = self.image.get_rect(center=self.rect.center)
-#reload
+    #reload
     def get_reload_progress(self):
         now = pygame.time.get_ticks()
         diff = now - self.last_shot
@@ -232,7 +232,7 @@ class Particle(pygame.sprite.Sprite):
                       random.randrange(0, 255))
         self.image.fill(self.color)
         self.rect = self.image.get_rect()
-        self.kill_timer = 30
+        self.kill_timer = 30 #30 Frames, bei uns 0,5secs bei 60 Frames
         self.vel_x = random.randrange(-8, 8)
         self.vel_y = random.randrange(-8, 8)
 
@@ -320,6 +320,7 @@ class Boss(pygame.sprite.Sprite):
         #Füllung (proportional zur HP)
         fill_width = int(bar_width * (self.health / self.health_max))
         pygame.draw.rect(window, GREEN, (x, y, fill_width, bar_height))
+
 
 
 
