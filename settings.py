@@ -1,23 +1,26 @@
-import pygame
-
-
+#Screen
 WIDTH, HEIGHT = 1280, 720
 FPS = 60
+
+#Player stats
 PLAYER_SPEED = 10
 PLAYER_WIDTH = 60
 PLAYER_HEIGHT = 60
-
 PLAYER_MAX_HP = 5
 PLAYER_HP = 5
 
+#Bullet-Player
 BULLET_SPEED = 10
 
-
-
+#Enemy stats
 ENEMY_WIDTH = 90
 ENEMY_HEIGHT = 90
 ENEMY_SPEED = 7
 
+#Boss stats
+BOSS_SPAWN = 3
+BOSS_HEALTH = 100
+BOSS_HEALTH_MAX = 100
 
 # Colors
 WHITE = (255, 255, 255)
@@ -30,7 +33,5 @@ GREY = (127, 127, 127)
 GOLD = (132, 106, 26)
 
 
-BOSS_SPAWN = 3
-BOSS_HEALTH = 100
-BOSS_HEALTH_MAX = 100
+
 
