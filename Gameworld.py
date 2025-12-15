@@ -17,7 +17,8 @@ def start_game(main_menu):
     pygame.display.set_caption("StarHawk'25")
     clock = pygame.time.Clock()
     dt = clock.tick(FPS)/1000
-
+    #Game music
+    play_game_music()
     # Sprites
     all_sprites = pygame.sprite.Group()
     enemies = pygame.sprite.Group()
@@ -212,4 +213,5 @@ def start_game(main_menu):
         pygame.display.flip()
 
     return
+
 
